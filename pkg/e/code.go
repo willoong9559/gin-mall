@@ -1,12 +1,14 @@
 package e
 
+type CustomError int
+
 const (
-	SUCCESS       = 200
-	ERROR         = 500
-	InvalidParams = 400
+	SUCCESS       CustomError = 200
+	ERROR         CustomError = 500
+	InvalidParams CustomError = 400
 
 	// User Error
-	ErrorExistUser = 30001 + iota
+	ErrorExistUser CustomError = 30001 + iota
 	ErrorFailEncryption
 	ErrorExistUserNotFound
 	ErrorNotCompare
@@ -16,5 +18,5 @@ const (
 	ErrorSendEmail
 
 	// Product Error
-	ErrorProductUpload = 40001 + iota
+	ErrorProductUpload CustomError = 40001 + iota
 )

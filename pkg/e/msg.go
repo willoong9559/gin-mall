@@ -1,6 +1,6 @@
 package e
 
-var MsgFlags = map[int]string{
+var MsgFlags = [...]string{
 	SUCCESS:       "ok",
 	ERROR:         "fail",
 	InvalidParams: "请求参数错误",
@@ -18,10 +18,8 @@ var MsgFlags = map[int]string{
 }
 
 // GetMsg 获取状态码对应信息
-func GetMsg(code int) string {
-	msg, ok := MsgFlags[code]
-	if !ok {
-		return MsgFlags[ERROR]
-	}
+func GetMsg(code CustomError) string {
+	msg := "自定义错误未定义"
+	msg = MsgFlags[code]
 	return msg
 }

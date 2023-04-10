@@ -38,7 +38,7 @@ func (service *ProductService) Create(ctx context.Context, uId uint, files []*mu
 	}
 	// 以第一张作为封面图
 	tmp, _ := files[0].Open()
-	path, err := UploadProductToLocalStatic(tmp, uId, service.Name)
+	path, err := utils.UploadToLocalStatic(tmp, uId, service.Name, utils.ProductImg)
 	if err != nil {
 		utils.LogrusObj.Info(err)
 		code = e.ErrorProductUpload
@@ -79,7 +79,7 @@ func (service *ProductService) Create(ctx context.Context, uId uint, files []*mu
 		num := strconv.Itoa(i)
 		productImgDao := dao.NewProductImgDaoByDB(productDao.DB)
 		tmp, _ = file.Open()
-		path, err = UploadProductToLocalStatic(tmp, uId, service.Name+num)
+		path, err = utils.UploadToLocalStatic(tmp, uId, service.Name+num, utils.ProductImg)
 		if err != nil {
 			code = e.ErrorProductUpload
 			return serializer.Response{

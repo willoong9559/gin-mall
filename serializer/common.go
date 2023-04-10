@@ -1,11 +1,13 @@
 package serializer
 
+import "github.com/willoong9559/gin-mall/pkg/e"
+
 // Response 基础序列化器
 type Response struct {
-	Status int         `json:"status"`
-	Data   interface{} `json:"data"`
-	Msg    string      `json:"msg"`
-	Error  string      `json:"error"`
+	Status e.CustomError `json:"status"`
+	Data   interface{}   `json:"data"`
+	Msg    string        `json:"msg"`
+	Error  string        `json:"error"`
 }
 
 //DataList 带有总数的Data结构

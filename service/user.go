@@ -192,7 +192,7 @@ func (service *UserService) Post(ctx context.Context, uId uint, file multipart.F
 		}
 	}
 	// 保存图片到本地
-	path, err := UploadAvatarToLocalStatic(file, uId, user.UserName)
+	path, err := utils.UploadToLocalStatic(file, uId, user.UserName, utils.Avatar)
 	if err != nil {
 		utils.LogrusObj.Info(err)
 		code = e.ErrorUploadFail
