@@ -5,7 +5,7 @@ const (
 	ERROR         = 500
 	InvalidParams = 400
 
-	// user错误
+	// User Error
 	ErrorExistUser = 30001 + iota
 	ErrorFailEncryption
 	ErrorExistUserNotFound
@@ -14,4 +14,7 @@ const (
 	ErrorAuthCheckTokenTimeout
 	ErrorUploadFail
 	ErrorSendEmail
+
+	// Product Error
+	ErrorProductUpload = 40001 + iota
 )
