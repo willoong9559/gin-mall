@@ -20,7 +20,14 @@ var TypeFileName = [...]string{Avatar: "user", ProductImg: "boss"}
 
 func UploadToLocalStatic(file multipart.File, userId uint, Name string, utype UploadType) (filePath string, err error) {
 	bId := strconv.Itoa(int(userId))
-	basePath := "." + conf.AvatarPath + TypeFileName[utype] + bId + "/"
+	var confBasePath string
+	switch utype {
+	case Avatar:
+		confBasePath = conf.AvatarPath
+	case ProductImg:
+		confBasePath = conf.ProductPath
+	}
+	basePath := "." + confBasePath + TypeFileName[utype] + bId + "/"
 	if !DirExistOrNot(basePath) {
 		CreateDir(basePath)
 	}

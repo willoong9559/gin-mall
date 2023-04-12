@@ -31,7 +31,7 @@ func BuildProduct(item *model.Product) Product {
 		CategoryID:    item.CategoryID,
 		Title:         item.Title,
 		Info:          item.Info,
-		ImgPath:       conf.Host + conf.HttpPort + item.ImgPath,
+		ImgPath:       conf.Host + conf.HttpPort + conf.ProductPath + item.ImgPath,
 		Price:         item.Price,
 		DiscountPrice: item.DiscountPrice,
 		View:          item.View(),
@@ -40,7 +40,7 @@ func BuildProduct(item *model.Product) Product {
 		CreatedAt:     item.CreatedAt.Unix(),
 		BossID:        item.BossID,
 		BossName:      item.BossName,
-		BossAvatar:    item.BossAvatar,
+		BossAvatar:    conf.Host + conf.HttpPort + conf.AvatarPath + item.BossAvatar,
 	}
 }
 

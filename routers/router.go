@@ -24,6 +24,7 @@ func NewRouter() *gin.Engine {
 
 		// 商品相关
 		v1.GET("carousels", api.ListCarousels) //轮播图
+		v1.GET("listProducts", api.ListProducts)
 	}
 
 	authed := v1.Group("/") //需要登陆保护

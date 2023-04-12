@@ -28,6 +28,11 @@ type ProductService struct {
 	model.BasePage
 }
 
+type ProductsListService struct {
+	CategoryID int `form:"category_id" json:"category_id"`
+	model.BasePage
+}
+
 func (service *ProductService) Create(ctx context.Context, uId uint, files []*multipart.FileHeader) serializer.Response {
 	var boss *model.User
 	code := e.SUCCESS
@@ -110,4 +115,32 @@ func (service *ProductService) Create(ctx context.Context, uId uint, files []*mu
 		Data:   serializer.BuildProduct(product),
 		Msg:    e.GetMsg(code),
 	}
+}
+
+func (service *ProductsListService) List(ctx context.Context) serializer.Response {
+	var products []*model.Product
+	code := e.SUCCESS
+	if service.PageSize == 0 {
+		service.PageSize = 15
+	}
+	condition := make(map[string]interface{})
+	if service.CategoryID != 0 {
+		condition["categorg_id"] = service.CategoryID
+	}
+
+	productDao := dao.NewProductDao(ctx)
+	total, err := productDao.CountProductByCondition(condition)
+	if err != nil {
+		utils.LogrusObj.Info(err)
+		code = e.ERROR
+		return serializer.Response{
+			Status: code,
+			Msg:    e.GetMsg(code),
+			Error:  err.Error(),
+		}
+	}
+	productDao = dao.NewProductDaoByDB(productDao.DB)
+	products, _ = productDao.ListProductByCondition(condition, service.BasePage)
+
+	return serializer.BuildListResponse(serializer.BuildProducts(products), uint(total))
 }
