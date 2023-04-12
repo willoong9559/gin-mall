@@ -22,11 +22,21 @@ func CreateProduct(c *gin.Context) {
 }
 
 func ListProducts(c *gin.Context) {
-	listProductService := service.ProductsListService{}
+	listProductService := service.ProductService{}
 	if err := c.ShouldBind(&listProductService); err != nil {
 		utils.LogrusObj.Infoln(err)
 		c.JSON(http.StatusBadRequest, ErrorResponse(err))
 	}
 	res := listProductService.List(c.Request.Context())
+	c.JSON(http.StatusOK, res)
+}
+
+func SearchProducts(c *gin.Context) {
+	searchProductsService := service.ProductService{}
+	if err := c.ShouldBind(&searchProductsService); err != nil {
+		utils.LogrusObj.Infoln(err)
+		c.JSON(http.StatusBadRequest, ErrorResponse(err))
+	}
+	res := searchProductsService.Search(c.Request.Context())
 	c.JSON(http.StatusOK, res)
 }

@@ -18,18 +18,13 @@ type ProductService struct {
 	ID            uint   `form:"id" json:"id"`
 	Name          string `form:"name" json:"name"`
 	CategoryID    int    `form:"category_id" json:"category_id"`
-	Title         string `form:"title" json:"title" binding:"required,min=2,max=100"`
+	Title         string `form:"title" json:"title" binding:"omitempty,min=2,max=100"`
 	Info          string `form:"info" json:"info" binding:"max=1000"`
 	ImgPath       string `form:"img_path" json:"img_path"`
 	Price         string `form:"price" json:"price"`
 	DiscountPrice string `form:"discount_price" json:"discount_price"`
 	OnSale        bool   `form:"on_sale" json:"on_sale"`
 	Num           int    `form:"num" json:"num"`
-	model.BasePage
-}
-
-type ProductsListService struct {
-	CategoryID int `form:"category_id" json:"category_id"`
 	model.BasePage
 }
 
@@ -117,7 +112,7 @@ func (service *ProductService) Create(ctx context.Context, uId uint, files []*mu
 	}
 }
 
-func (service *ProductsListService) List(ctx context.Context) serializer.Response {
+func (service *ProductService) List(ctx context.Context) serializer.Response {
 	var products []*model.Product
 	code := e.SUCCESS
 	if service.PageSize == 0 {
@@ -143,4 +138,24 @@ func (service *ProductsListService) List(ctx context.Context) serializer.Respons
 	products, _ = productDao.ListProductByCondition(condition, service.BasePage)
 
 	return serializer.BuildListResponse(serializer.BuildProducts(products), uint(total))
+}
+
+func (service *ProductService) Search(ctx context.Context) serializer.Response {
+	code := e.SUCCESS
+	if service.PageSize == 0 {
+		service.PageSize = 15
+	}
+
+	productDao := dao.NewProductDao(ctx)
+	products, count, err := productDao.SearchProducts(service.Info, service.BasePage)
+	if err != nil {
+		utils.LogrusObj.Info(err)
+		code = e.ERROR
+		return serializer.Response{
+			Status: code,
+			Msg:    e.GetMsg(code),
+			Error:  err.Error(),
+		}
+	}
+	return serializer.BuildListResponse(serializer.BuildProducts(products), uint(count))
 }
