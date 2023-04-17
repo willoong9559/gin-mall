@@ -1,0 +1,637 @@
+definitions:
+  e.CustomError:
+    enum:
+    - 200
+    - 500
+    - 400
+    - 30004
+    - 30005
+    - 30006
+    - 30007
+    - 30008
+    - 30009
+    - 30010
+    - 30011
+    - 40012
+    type: integer
+    x-enum-varnames:
+    - SUCCESS
+    - ERROR
+    - InvalidParams
+    - ErrorExistUser
+    - ErrorFailEncryption
+    - ErrorExistUserNotFound
+    - ErrorNotCompare
+    - ErrorAuthToken
+    - ErrorAuthCheckTokenTimeout
+    - ErrorUploadFail
+    - ErrorSendEmail
+    - ErrorProductUpload
+  serializer.Response:
+    properties:
+      data: {}
+      error:
+        type: string
+      msg:
+        type: string
+      status:
+        $ref: '#/definitions/e.CustomError'
+    type: object
+info:
+  contact: {}
+  description: gin-mall
+  termsOfService: https://github.com/willoong9559/gin-mall
+  title: 商城系统
+  version: "1.0"
+paths:
+  /api/v1/avatar:
+    post:
+      parameters:
+      - description: 昵称
+        in: body
+        maxLength: 100
+        name: nick_name
+        required: true
+        schema:
+          type: string
+      - description: 用户名
+        in: body
+        maxLength: 100
+        name: user_name
+        required: true
+        schema:
+          type: string
+      - description: 密码
+        in: body
+        name: password
+        required: true
+        schema:
+          type: integer
+      - description: 密码加密key
+        in: body
+        maxLength: 16
+        minLength: 16
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: 验证码
+        in: body
+        maxLength: 4
+        minLength: 4
+        name: captcha
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/serializer.Response'
+      summary: 更改用户头像
+  /api/v1/carousels:
+    post:
+      parameters:
+      - description: 昵称
+        in: body
+        maxLength: 100
+        name: nick_name
+        required: true
+        schema:
+          type: string
+      - description: 用户名
+        in: body
+        maxLength: 100
+        name: user_name
+        required: true
+        schema:
+          type: string
+      - description: 密码
+        in: body
+        name: password
+        required: true
+        schema:
+          type: integer
+      - description: 密码加密key
+        in: body
+        maxLength: 16
+        minLength: 16
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: 验证码
+        in: body
+        maxLength: 4
+        minLength: 4
+        name: captcha
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/serializer.Response'
+      summary: 获取轮播图
+  /api/v1/listProducts:
+    post:
+      parameters:
+      - description: 昵称
+        in: body
+        maxLength: 100
+        name: nick_name
+        required: true
+        schema:
+          type: string
+      - description: 用户名
+        in: body
+        maxLength: 100
+        name: user_name
+        required: true
+        schema:
+          type: string
+      - description: 密码
+        in: body
+        name: password
+        required: true
+        schema:
+          type: integer
+      - description: 密码加密key
+        in: body
+        maxLength: 16
+        minLength: 16
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: 验证码
+        in: body
+        maxLength: 4
+        minLength: 4
+        name: captcha
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/serializer.Response'
+      summary: 展示用户商品
+  /api/v1/money:
+    post:
+      parameters:
+      - description: 昵称
+        in: body
+        maxLength: 100
+        name: nick_name
+        required: true
+        schema:
+          type: string
+      - description: 用户名
+        in: body
+        maxLength: 100
+        name: user_name
+        required: true
+        schema:
+          type: string
+      - description: 密码
+        in: body
+        name: password
+        required: true
+        schema:
+          type: integer
+      - description: 密码加密key
+        in: body
+        maxLength: 16
+        minLength: 16
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: 验证码
+        in: body
+        maxLength: 4
+        minLength: 4
+        name: captcha
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/serializer.Response'
+      summary: 获取用户金额
+  /api/v1/product:
+    post:
+      parameters:
+      - description: 昵称
+        in: body
+        maxLength: 100
+        name: nick_name
+        required: true
+        schema:
+          type: string
+      - description: 用户名
+        in: body
+        maxLength: 100
+        name: user_name
+        required: true
+        schema:
+          type: string
+      - description: 密码
+        in: body
+        name: password
+        required: true
+        schema:
+          type: integer
+      - description: 密码加密key
+        in: body
+        maxLength: 16
+        minLength: 16
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: 验证码
+        in: body
+        maxLength: 4
+        minLength: 4
+        name: captcha
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/serializer.Response'
+      summary: 创建商品
+  /api/v1/searchProducts:
+    post:
+      parameters:
+      - description: 昵称
+        in: body
+        maxLength: 100
+        name: nick_name
+        required: true
+        schema:
+          type: string
+      - description: 用户名
+        in: body
+        maxLength: 100
+        name: user_name
+        required: true
+        schema:
+          type: string
+      - description: 密码
+        in: body
+        name: password
+        required: true
+        schema:
+          type: integer
+      - description: 密码加密key
+        in: body
+        maxLength: 16
+        minLength: 16
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: 验证码
+        in: body
+        maxLength: 4
+        minLength: 4
+        name: captcha
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/serializer.Response'
+      summary: 搜索商品
+  /api/v1/user:
+    put:
+      parameters:
+      - description: 昵称
+        in: body
+        maxLength: 100
+        name: nick_name
+        required: true
+        schema:
+          type: string
+      - description: 用户名
+        in: body
+        maxLength: 100
+        name: user_name
+        required: true
+        schema:
+          type: string
+      - description: 密码
+        in: body
+        name: password
+        required: true
+        schema:
+          type: integer
+      - description: 密码加密key
+        in: body
+        maxLength: 16
+        minLength: 16
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: 验证码
+        in: body
+        maxLength: 4
+        minLength: 4
+        name: captcha
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/serializer.Response'
+      summary: 更新用户昵称
+  /api/v1/user/login:
+    post:
+      parameters:
+      - description: 用户名
+        in: body
+        maxLength: 100
+        name: user_name
+        required: true
+        schema:
+          type: string
+      - description: 密码
+        in: body
+        name: password
+        required: true
+        schema:
+          type: integer
+      - description: 验证码
+        in: body
+        maxLength: 4
+        minLength: 4
+        name: captcha
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/serializer.Response'
+      summary: 用户登录
+  /api/v1/user/register:
+    post:
+      parameters:
+      - description: 昵称
+        in: body
+        maxLength: 100
+        name: nick_name
+        required: true
+        schema:
+          type: string
+      - description: 用户名
+        in: body
+        maxLength: 100
+        name: user_name
+        required: true
+        schema:
+          type: string
+      - description: 密码
+        in: body
+        name: password
+        required: true
+        schema:
+          type: integer
+      - description: 密码加密key
+        in: body
+        maxLength: 16
+        minLength: 16
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: 验证码
+        in: body
+        maxLength: 4
+        minLength: 4
+        name: captcha
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/serializer.Response'
+      summary: 用户注册
+  /api/v1/user/sending-email:
+    post:
+      parameters:
+      - description: 昵称
+        in: body
+        maxLength: 100
+        name: nick_name
+        required: true
+        schema:
+          type: string
+      - description: 用户名
+        in: body
+        maxLength: 100
+        name: user_name
+        required: true
+        schema:
+          type: string
+      - description: 密码
+        in: body
+        name: password
+        required: true
+        schema:
+          type: integer
+      - description: 密码加密key
+        in: body
+        maxLength: 16
+        minLength: 16
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: 验证码
+        in: body
+        maxLength: 4
+        minLength: 4
+        name: captcha
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/serializer.Response'
+      summary: 绑定邮箱
+  /api/v1/user/valid-email:
+    post:
+      parameters:
+      - description: 昵称
+        in: body
+        maxLength: 100
+        name: nick_name
+        required: true
+        schema:
+          type: string
+      - description: 用户名
+        in: body
+        maxLength: 100
+        name: user_name
+        required: true
+        schema:
+          type: string
+      - description: 密码
+        in: body
+        name: password
+        required: true
+        schema:
+          type: integer
+      - description: 密码加密key
+        in: body
+        maxLength: 16
+        minLength: 16
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: 验证码
+        in: body
+        maxLength: 4
+        minLength: 4
+        name: captcha
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/serializer.Response'
+      summary: 验证邮箱
+swagger: "2.0"
