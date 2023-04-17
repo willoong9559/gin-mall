@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/willoong9559/gin-mall/internel/service"
 	"github.com/willoong9559/gin-mall/pkg/utils"
-	"github.com/willoong9559/gin-mall/service"
 )
 
 // @Summary 用户注册

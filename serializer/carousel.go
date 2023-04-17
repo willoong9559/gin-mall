@@ -1,6 +1,6 @@
 package serializer
 
-import "github.com/willoong9559/gin-mall/model"
+import "github.com/willoong9559/gin-mall/internel/model"
 
 type Carousel struct {
 	ID        uint   `json:"id"`

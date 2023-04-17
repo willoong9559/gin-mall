@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/willoong9559/gin-mall/dao"
+	"github.com/willoong9559/gin-mall/internel/dao"
 	"gopkg.in/ini.v1"
 )
 

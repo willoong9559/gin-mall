@@ -1,7 +1,7 @@
 package serializer
 
 import (
-	"github.com/willoong9559/gin-mall/model"
+	"github.com/willoong9559/gin-mall/internel/model"
 	"github.com/willoong9559/gin-mall/pkg/utils"
 )
 

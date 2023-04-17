@@ -8,9 +8,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/willoong9559/gin-mall/conf"
-	"github.com/willoong9559/gin-mall/dao"
-	"github.com/willoong9559/gin-mall/model"
-	"github.com/willoong9559/gin-mall/pkg/e"
+	"github.com/willoong9559/gin-mall/internel/dao"
+	"github.com/willoong9559/gin-mall/internel/model"
+	e "github.com/willoong9559/gin-mall/pkg/errcode"
 	"github.com/willoong9559/gin-mall/pkg/utils"
 	"github.com/willoong9559/gin-mall/serializer"
 	"gopkg.in/mail.v2"

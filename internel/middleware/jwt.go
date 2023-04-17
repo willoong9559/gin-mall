@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/willoong9559/gin-mall/pkg/e"
+	e "github.com/willoong9559/gin-mall/pkg/errcode"
 	"github.com/willoong9559/gin-mall/pkg/utils"
 )
 

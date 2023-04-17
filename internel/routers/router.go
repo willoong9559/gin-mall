@@ -6,9 +6,9 @@ import (
 	"github.com/gin-gonic/gin"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
-	api "github.com/willoong9559/gin-mall/api/v1"
 	_ "github.com/willoong9559/gin-mall/docs"
-	"github.com/willoong9559/gin-mall/middleware"
+	api "github.com/willoong9559/gin-mall/internel/api/v1"
+	"github.com/willoong9559/gin-mall/internel/middleware"
 )
 
 func NewRouter() *gin.Engine {

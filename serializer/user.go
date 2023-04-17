@@ -2,7 +2,7 @@ package serializer
 
 import (
 	"github.com/willoong9559/gin-mall/conf"
-	"github.com/willoong9559/gin-mall/model"
+	"github.com/willoong9559/gin-mall/internel/model"
 )
 
 type User struct {

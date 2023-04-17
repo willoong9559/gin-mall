@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/willoong9559/gin-mall/conf"
-	"github.com/willoong9559/gin-mall/routers"
+	"github.com/willoong9559/gin-mall/internel/routers"
 )
 
 // @title 商城系统

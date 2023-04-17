@@ -1,6 +1,6 @@
 package serializer
 
-import "github.com/willoong9559/gin-mall/pkg/e"
+import e "github.com/willoong9559/gin-mall/pkg/errcode"
 
 // Response 基础序列化器
 type Response struct {

@@ -3,8 +3,8 @@ package service
 import (
 	"context"
 
-	"github.com/willoong9559/gin-mall/dao"
-	"github.com/willoong9559/gin-mall/pkg/e"
+	"github.com/willoong9559/gin-mall/internel/dao"
+	e "github.com/willoong9559/gin-mall/pkg/errcode"
 	"github.com/willoong9559/gin-mall/pkg/utils"
 	"github.com/willoong9559/gin-mall/serializer"
 )

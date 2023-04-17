@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/willoong9559/gin-mall/model"
+	"github.com/willoong9559/gin-mall/internel/model"
 )
 
 // Migration 执行数据迁移
