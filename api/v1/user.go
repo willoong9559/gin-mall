@@ -35,7 +35,7 @@ func UserLogin(c *gin.Context) {
 		utils.LogrusObj.Infoln(err)
 		c.JSON(http.StatusBadRequest, err)
 	}
-	res := userLogin.Login(c.Request.Context())
+	res := userLogin.Login(c)
 	c.JSON(http.StatusOK, res)
 }
 

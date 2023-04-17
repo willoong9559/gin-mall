@@ -106,9 +106,17 @@ func (service *UserService) Register(ctx *gin.Context) serializer.Response {
 	}
 }
 
-func (service *UserService) Login(ctx context.Context) serializer.Response {
+func (service *UserService) Login(ctx *gin.Context) serializer.Response {
 	var user *model.User
 	code := e.SUCCESS
+	if !utils.CaptchaVerify(ctx, service.CaptchaCode) {
+		code = e.ERROR
+		return serializer.Response{
+			Status: code,
+			Msg:    e.GetMsg(code),
+			Data:   "验证码错误",
+		}
+	}
 	userDao := dao.NewUserDao(ctx)
 	// 判断用户是否存在
 	user, exist, err := userDao.ExistOrNotByUserName(service.UserName)
