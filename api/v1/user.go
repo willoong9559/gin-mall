@@ -8,13 +8,24 @@ import (
 	"github.com/willoong9559/gin-mall/service"
 )
 
+// @Summary 用户注册
+// @Produce  json
+// @Param nick_name query string true "昵称" maxlength(100)
+// @Param user_name query string true "用户名" maxlength(100)
+// @Param password query int true "密码"
+// @Param key query string true "密码加密key"
+// @Success 200 {object} serializer.Response "成功"
+// @Failure 400 {object} serializer.Response "请求错误"
+// @Failure 500 {object} serializer.Response "内部错误"
+// @Router /api/v1/user/register [post]
+
 func UserRegister(c *gin.Context) {
 	var userRegisterService service.UserService
 	if err := c.ShouldBind(&userRegisterService); err != nil {
 		utils.LogrusObj.Infoln(err)
 		c.JSON(http.StatusBadRequest, err)
 	}
-	res := userRegisterService.Register(c.Request.Context())
+	res := userRegisterService.Register(c)
 	c.JSON(http.StatusOK, res)
 }
 

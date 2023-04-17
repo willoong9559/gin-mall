@@ -4,7 +4,10 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 	api "github.com/willoong9559/gin-mall/api/v1"
+	_ "github.com/willoong9559/gin-mall/docs"
 	"github.com/willoong9559/gin-mall/middleware"
 )
 
@@ -12,13 +15,12 @@ func NewRouter() *gin.Engine {
 	r := gin.Default()
 
 	r.Use(middleware.Cors())
+	r.Use(middleware.Session("somekey"))
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.StaticFS("/static", http.Dir("./static"))
+	r.GET("/captcha", api.GetCaptcha)
 	v1 := r.Group("api/v1")
 	{
-		v1.GET("ping", func(c *gin.Context) {
-			c.JSON(200, "success")
-		})
-		// 用户相关
 		v1.POST("user/register", api.UserRegister)
 		v1.POST("user/login", api.UserLogin)
 

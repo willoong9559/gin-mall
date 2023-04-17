@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/willoong9559/gin-mall/conf"
 	"github.com/willoong9559/gin-mall/dao"
 	"github.com/willoong9559/gin-mall/model"
@@ -17,10 +18,11 @@ import (
 
 // UserService 管理用户服务
 type UserService struct {
-	NickName string `form:"nick_name" json:"nick_name"`
-	UserName string `form:"user_name" json:"user_name"`
-	Password string `form:"password" json:"password"`
-	Key      string `form:"key" json:"key"` // 前端进行判断
+	NickName    string `form:"nick_name" json:"nick_name"`
+	UserName    string `form:"user_name" json:"user_name"`
+	Password    string `form:"password" json:"password"`
+	Key         string `form:"key" json:"key"` // 前端进行判断
+	CaptchaCode string `form:"captcha_code" json:"captcha_code"`
 }
 
 type SendEmailService struct {
@@ -37,9 +39,17 @@ type ShowMoneyService struct {
 	Key string `json:"key" form:"key"`
 }
 
-func (service *UserService) Register(ctx context.Context) serializer.Response {
+func (service *UserService) Register(ctx *gin.Context) serializer.Response {
 	var user *model.User
 	code := e.SUCCESS
+	if !utils.CaptchaVerify(ctx, service.CaptchaCode) {
+		code = e.ERROR
+		return serializer.Response{
+			Status: code,
+			Msg:    e.GetMsg(code),
+			Data:   "验证码错误",
+		}
+	}
 	if service.Key == "" || len(service.Key) != 16 {
 		code = e.ERROR
 		return serializer.Response{
