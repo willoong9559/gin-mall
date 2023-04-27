@@ -15,7 +15,7 @@ import (
 	"github.com/willoong9559/gin-mall/conf"
 )
 
-var Trans ut.Translator
+var trans ut.Translator
 
 type ValidationErrors struct {
 	validator.ValidationErrors
@@ -27,7 +27,7 @@ func GetValidationErrors(err error) (ValidationErrors, bool) {
 }
 
 func (errs ValidationErrors) Translate() map[string]string {
-	ValidationErrs := errs.ValidationErrors.Translate(Trans)
+	ValidationErrs := errs.ValidationErrors.Translate(trans)
 	return removeTopStruct(ValidationErrs)
 }
 
@@ -55,7 +55,7 @@ func LoadValidTrans() {
 		en := en.New()
 		// 第一个参数是备用的语言环境，后面的参数是应该支持的语言环境
 		uni := ut.New(en, zh, en)
-		Trans, ok = uni.GetTranslator(lang)
+		trans, ok = uni.GetTranslator(lang)
 		log.Println("lang=", lang)
 		if !ok {
 			log.Printf("get uni.GetTranslator(%s) failed", lang)
@@ -63,11 +63,11 @@ func LoadValidTrans() {
 		}
 		switch lang {
 		case "en":
-			en_translations.RegisterDefaultTranslations(validate, Trans)
+			en_translations.RegisterDefaultTranslations(validate, trans)
 		case "zh":
-			zh_translations.RegisterDefaultTranslations(validate, Trans)
+			zh_translations.RegisterDefaultTranslations(validate, trans)
 		default:
-			en_translations.RegisterDefaultTranslations(validate, Trans)
+			en_translations.RegisterDefaultTranslations(validate, trans)
 		}
 	}
 }
