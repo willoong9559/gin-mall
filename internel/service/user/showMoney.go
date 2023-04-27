@@ -1,4 +1,4 @@
-package service
+package user
 
 import (
 	"context"
@@ -9,12 +9,14 @@ import (
 	"github.com/willoong9559/gin-mall/serializer"
 )
 
-type ListCarouselsService struct{}
+type ShowMoneyService struct {
+	Key string `json:"key" form:"key"`
+}
 
-func (service *ListCarouselsService) List(ctx context.Context) serializer.Response {
+func (service *ShowMoneyService) Show(ctx context.Context, uId uint) serializer.Response {
 	code := e.SUCCESS
-	carouselsCtx := dao.NewCarouselDao(context.Background())
-	carousels, err := carouselsCtx.ListAddress()
+	userDao := dao.NewUserDao(ctx)
+	user, err := userDao.GetUserById(uId)
 	if err != nil {
 		utils.LogrusObj.Info(err)
 		code = e.ERROR
@@ -23,5 +25,9 @@ func (service *ListCarouselsService) List(ctx context.Context) serializer.Respon
 			Msg:    e.GetMsg(code),
 		}
 	}
-	return serializer.BuildListResponse(serializer.BuildCarousels(carousels), uint(len(carousels)))
+	return serializer.Response{
+		Status: code,
+		Data:   serializer.BuildMoney(user, service.Key),
+		Msg:    e.GetMsg(code),
+	}
 }

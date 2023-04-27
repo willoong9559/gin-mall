@@ -1,22 +1,21 @@
 package v1
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/willoong9559/gin-mall/internel/localization"
-	"github.com/willoong9559/gin-mall/internel/service"
-	e "github.com/willoong9559/gin-mall/pkg/errcode"
+	"github.com/willoong9559/gin-mall/internel/service/email"
+	"github.com/willoong9559/gin-mall/internel/service/user"
 	"github.com/willoong9559/gin-mall/pkg/utils"
-	"github.com/willoong9559/gin-mall/serializer"
 )
 
 // @Summary 用户注册
+// @Accept  json
 // @Produce  json
-// @Param nick_name body string true "昵称" maxlength(100)
-// @Param user_name body string true "用户名" maxlength(100)
-// @Param password body int true "密码"
+// @Param nick_name body string true "昵称" minlength(5) maxlength(8)
+// @Param user_name body string true "用户名" minlength(5) maxlength(12)
+// @Param password body string true "密码" minlength(5) maxlength(12)
+// @Param re_password body string true "重复密码" minlength(5) maxlength(12)
 // @Param key body string true "密码加密key" minlength(16) maxlength(16)
 // @Param captcha body string true "验证码" minlength(4) maxlength(4)
 // @Success 200 {object} serializer.Response "成功"
@@ -24,26 +23,9 @@ import (
 // @Failure 500 {object} serializer.Response "内部错误"
 // @Router /api/v1/user/register [post]
 func UserRegister(c *gin.Context) {
-	var userRegisterService service.UserRegisterService
+	var userRegisterService user.UserRegisterService
 	if err := c.ShouldBind(&userRegisterService); err != nil {
-		// validator binding error
-		code := e.CustomError(http.StatusBadRequest)
-		errs, ok := localization.GetValidationErrors(err)
-		if ok {
-			fmt.Println("ok")
-			c.JSON(http.StatusBadRequest, serializer.Response{
-				Status: code,
-				Data:   errs.Translate(),
-				Msg:    e.GetMsg(code),
-			})
-			return
-		}
-		// 其他错误
-		c.JSON(http.StatusBadRequest, serializer.Response{
-			Status: code,
-			Data:   err.Error(),
-			Msg:    e.GetMsg(code),
-		})
+		handleBindingErr(c, err)
 		return
 	}
 	res := userRegisterService.Register(c)
@@ -51,25 +33,27 @@ func UserRegister(c *gin.Context) {
 }
 
 // @Summary 用户登录
+// @Accept  json
 // @Produce  json
-// @Param user_name body string true "用户名" maxlength(100)
-// @Param password body int true "密码"
+// @Param user_name body string true "用户名" minlength(5) maxlength(12)
+// @Param password body string true "密码" minlength(5) maxlength(12)
 // @Param captcha body string true "验证码" minlength(4) maxlength(4)
 // @Success 200 {object} serializer.Response "成功"
 // @Failure 400 {object} serializer.Response "请求错误"
 // @Failure 500 {object} serializer.Response "内部错误"
 // @Router /api/v1/user/login [post]
 func UserLogin(c *gin.Context) {
-	var userLogin service.UserLoginService
+	var userLogin user.UserLoginService
 	if err := c.ShouldBind(&userLogin); err != nil {
-		utils.LogrusObj.Infoln(err)
-		c.JSON(http.StatusBadRequest, err)
+		handleBindingErr(c, err)
+		return
 	}
 	res := userLogin.Login(c)
 	c.JSON(http.StatusOK, res)
 }
 
 // @Summary 更新用户昵称
+// @Accept  json
 // @Produce  json
 // @Param nick_name body string true "昵称" maxlength(100)
 // @Param user_name body string true "用户名" maxlength(100)
@@ -81,7 +65,7 @@ func UserLogin(c *gin.Context) {
 // @Failure 500 {object} serializer.Response "内部错误"
 // @Router /api/v1/user [put]
 func UserUpdate(c *gin.Context) {
-	var userUpdate service.UserUpdateService
+	var userUpdate user.UserUpdateService
 	claims, _ := utils.ParseToken(c.GetHeader("Authorization"))
 	if err := c.ShouldBind(&userUpdate); err != nil {
 		utils.LogrusObj.Infoln(err)
@@ -105,7 +89,7 @@ func UserUpdate(c *gin.Context) {
 func UploadAvatar(c *gin.Context) {
 	file, fileHeader, _ := c.Request.FormFile("file")
 	fileSize := fileHeader.Size
-	uploadAvatarService := service.UserService{}
+	uploadAvatarService := user.UserService{}
 	claims, _ := utils.ParseToken(c.GetHeader("Authorization"))
 	if err := c.ShouldBind(&uploadAvatarService); err != nil {
 		utils.LogrusObj.Infoln(err)
@@ -127,7 +111,7 @@ func UploadAvatar(c *gin.Context) {
 // @Failure 500 {object} serializer.Response "内部错误"
 // @Router /api/v1/user/sending-email [post]
 func SendEmail(c *gin.Context) {
-	var sendEmail service.SendEmailService
+	var sendEmail email.SendEmailService
 	claims, _ := utils.ParseToken(c.GetHeader("Authorization"))
 	if err := c.ShouldBind(&sendEmail); err != nil {
 		utils.LogrusObj.Infoln(err)
@@ -149,7 +133,7 @@ func SendEmail(c *gin.Context) {
 // @Failure 500 {object} serializer.Response "内部错误"
 // @Router /api/v1/user/valid-email [post]
 func ValidEmail(c *gin.Context) {
-	var vaildEmailService service.ValidEmailService
+	var vaildEmailService email.ValidEmailService
 	if err := c.ShouldBind(&vaildEmailService); err != nil {
 		utils.LogrusObj.Infoln(err)
 		c.JSON(http.StatusBadRequest, ErrorResponse(err))
@@ -170,7 +154,7 @@ func ValidEmail(c *gin.Context) {
 // @Failure 500 {object} serializer.Response "内部错误"
 // @Router /api/v1/money [post]
 func ShowMoney(c *gin.Context) {
-	var showMoneyService service.ShowMoneyService
+	var showMoneyService user.ShowMoneyService
 	claims, _ := utils.ParseToken(c.GetHeader("Authorization"))
 	if err := c.ShouldBind(&showMoneyService); err != nil {
 		utils.LogrusObj.Infoln(err)

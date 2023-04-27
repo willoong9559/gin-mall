@@ -45,7 +45,6 @@ func (service *ProductService) Create(ctx context.Context, uId uint, files []*mu
 		return serializer.Response{
 			Status: code,
 			Msg:    e.GetMsg(code),
-			Error:  err.Error(),
 		}
 	}
 	product := &model.Product{
@@ -70,7 +69,6 @@ func (service *ProductService) Create(ctx context.Context, uId uint, files []*mu
 		return serializer.Response{
 			Status: code,
 			Msg:    e.GetMsg(code),
-			Error:  err.Error(),
 		}
 	}
 	wg := sync.WaitGroup{}
@@ -85,7 +83,6 @@ func (service *ProductService) Create(ctx context.Context, uId uint, files []*mu
 			return serializer.Response{
 				Status: code,
 				Msg:    e.GetMsg(code),
-				Error:  path,
 			}
 		}
 		productImg := &model.ProductImg{
@@ -98,7 +95,6 @@ func (service *ProductService) Create(ctx context.Context, uId uint, files []*mu
 			return serializer.Response{
 				Status: code,
 				Msg:    e.GetMsg(code),
-				Error:  err.Error(),
 			}
 		}
 		wg.Done()
@@ -131,7 +127,6 @@ func (service *ProductService) List(ctx context.Context) serializer.Response {
 		return serializer.Response{
 			Status: code,
 			Msg:    e.GetMsg(code),
-			Error:  err.Error(),
 		}
 	}
 	productDao = dao.NewProductDaoByDB(productDao.DB)
@@ -154,7 +149,6 @@ func (service *ProductService) Search(ctx context.Context) serializer.Response {
 		return serializer.Response{
 			Status: code,
 			Msg:    e.GetMsg(code),
-			Error:  err.Error(),
 		}
 	}
 	return serializer.BuildListResponse(serializer.BuildProducts(products), uint(count))

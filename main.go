@@ -6,10 +6,16 @@ import (
 	"github.com/willoong9559/gin-mall/internel/routers"
 )
 
-// @title 商城系统
+// @title gin-mall
 // @version 1.0
-// @description gin-mall
+// @description This is a sample server  :) .
 // @termsOfService https://github.com/willoong9559/gin-mall
+
+// @contact.name   API Support
+// @contact.email  willoongl@gmail.com
+
+// @host      localhost:8080
+// @BasePath  /api/v1
 func main() {
 	conf.Init()
 	localization.LoadValidTrans()

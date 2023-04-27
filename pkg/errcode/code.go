@@ -9,9 +9,12 @@ const (
 
 	// User Error
 	ErrorExistUser CustomError = 30001 + iota
+	ErrorCaptcha
+	ErrorDatabase
 	ErrorFailEncryption
 	ErrorExistUserNotFound
 	ErrorNotCompare
+
 	ErrorAuthToken
 	ErrorAuthCheckTokenTimeout
 	ErrorUploadFail

@@ -5,9 +5,16 @@ import e "github.com/willoong9559/gin-mall/pkg/errcode"
 // Response 基础序列化器
 type Response struct {
 	Status e.CustomError `json:"status"`
-	Data   interface{}   `json:"data"`
 	Msg    string        `json:"msg"`
-	Error  string        `json:"error"`
+	Data   interface{}   `json:"data"`
+}
+
+func GetResponse(status e.CustomError, data interface{}) *Response {
+	return &Response{
+		Status: status,
+		Msg:    e.GetMsg(status),
+		Data:   data,
+	}
 }
 
 // DataList 带有总数的Data结构
