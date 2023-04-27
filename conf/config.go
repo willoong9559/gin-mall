@@ -32,6 +32,8 @@ var (
 	Host        string
 	ProductPath string
 	AvatarPath  string
+
+	ValidatorLang string
 )
 
 func Init() {
@@ -43,6 +45,7 @@ func Init() {
 	LoadMysql(file)
 	LoadEmail(file)
 	LoadPhotoPath(file)
+	LoadValidator(file)
 	pathRead := strings.Join([]string{DbUser, ":", DbPassWord, "@tcp(", DbHost, ":", DbPort, ")/", DbName, "?charset=utf8mb4&parseTime=true"}, "")
 	pathWrite := strings.Join([]string{DbUser, ":", DbPassWord, "@tcp(", DbHost, ":", DbPort, ")/", DbName, "?charset=utf8mb4&parseTime=true"}, "")
 	dao.Database(pathRead, pathWrite)
@@ -73,4 +76,8 @@ func LoadPhotoPath(file *ini.File) {
 	Host = file.Section("path").Key("Host").String()
 	ProductPath = file.Section("path").Key("ProductPath").String()
 	AvatarPath = file.Section("path").Key("AvatarPath").String()
+}
+
+func LoadValidator(file *ini.File) {
+	ValidatorLang = file.Section("validator").Key("Language").String()
 }

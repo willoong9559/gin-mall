@@ -27,7 +27,7 @@ func UploadToLocalStatic(file multipart.File, userId uint, Name string, utype Up
 	case ProductImg:
 		confBasePath = conf.ProductPath
 	}
-	basePath := "." + confBasePath + TypeFileName[utype] + bId + "/"
+	basePath := "." + confBasePath + "/" + TypeFileName[utype] + bId + "/"
 	if !DirExistOrNot(basePath) {
 		CreateDir(basePath)
 	}

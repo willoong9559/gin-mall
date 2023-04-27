@@ -1,11 +1,15 @@
 package v1
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/willoong9559/gin-mall/internel/localization"
 	"github.com/willoong9559/gin-mall/internel/service"
+	e "github.com/willoong9559/gin-mall/pkg/errcode"
 	"github.com/willoong9559/gin-mall/pkg/utils"
+	"github.com/willoong9559/gin-mall/serializer"
 )
 
 // @Summary 用户注册
@@ -20,10 +24,27 @@ import (
 // @Failure 500 {object} serializer.Response "内部错误"
 // @Router /api/v1/user/register [post]
 func UserRegister(c *gin.Context) {
-	var userRegisterService service.UserService
+	var userRegisterService service.UserRegisterService
 	if err := c.ShouldBind(&userRegisterService); err != nil {
-		utils.LogrusObj.Infoln(err)
-		c.JSON(http.StatusBadRequest, err)
+		// validator binding error
+		code := e.CustomError(http.StatusBadRequest)
+		errs, ok := localization.GetValidationErrors(err)
+		if ok {
+			fmt.Println("ok")
+			c.JSON(http.StatusBadRequest, serializer.Response{
+				Status: code,
+				Data:   errs.Translate(),
+				Msg:    e.GetMsg(code),
+			})
+			return
+		}
+		// 其他错误
+		c.JSON(http.StatusBadRequest, serializer.Response{
+			Status: code,
+			Data:   err.Error(),
+			Msg:    e.GetMsg(code),
+		})
+		return
 	}
 	res := userRegisterService.Register(c)
 	c.JSON(http.StatusOK, res)
@@ -39,7 +60,7 @@ func UserRegister(c *gin.Context) {
 // @Failure 500 {object} serializer.Response "内部错误"
 // @Router /api/v1/user/login [post]
 func UserLogin(c *gin.Context) {
-	var userLogin service.UserService
+	var userLogin service.UserLoginService
 	if err := c.ShouldBind(&userLogin); err != nil {
 		utils.LogrusObj.Infoln(err)
 		c.JSON(http.StatusBadRequest, err)
@@ -60,7 +81,7 @@ func UserLogin(c *gin.Context) {
 // @Failure 500 {object} serializer.Response "内部错误"
 // @Router /api/v1/user [put]
 func UserUpdate(c *gin.Context) {
-	var userUpdate service.UserService
+	var userUpdate service.UserUpdateService
 	claims, _ := utils.ParseToken(c.GetHeader("Authorization"))
 	if err := c.ShouldBind(&userUpdate); err != nil {
 		utils.LogrusObj.Infoln(err)

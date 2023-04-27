@@ -16,13 +16,28 @@ import (
 	"gopkg.in/mail.v2"
 )
 
-// UserService 管理用户服务
 type UserService struct {
-	NickName    string `form:"nick_name" json:"nick_name"`
-	UserName    string `form:"user_name" json:"user_name"`
-	Password    string `form:"password" json:"password"`
-	Key         string `form:"key" json:"key"` // 前端进行判断
-	CaptchaCode string `form:"captcha_code" json:"captcha_code"`
+	UserName string `form:"user_name" json:"user_name" binding:"required,min=5,max=12"`
+	Password string `form:"password" json:"password" binding:"required,min=5,max=12"`
+	Key      string `form:"key" json:"key" binding:"required,len=16` // 密码加密存储秘钥（必须）
+}
+
+type UserRegisterService struct {
+	UserService
+	NickName    string `form:"nick_name" json:"nick_name" binding:"required,min=5,max=8"`
+	RePassword  string `form:"re_password" json:"password" binding:"required,eqfield=Password"`
+	CaptchaCode string `form:"captcha_code" json:"captcha_code" binding:"required,len=4"`
+}
+
+type UserLoginService struct {
+	UserService
+	CaptchaCode string `form:"captcha_code" json:"captcha_code" binding:"required,len=4"`
+}
+
+type UserUpdateService struct {
+	UserService
+	NickName    string `form:"nick_name" json:"nick_name" binding:"required,min=5,max=8"`
+	CaptchaCode string `form:"captcha_code" json:"captcha_code" binding:"required,len=4"`
 }
 
 type SendEmailService struct {
@@ -39,7 +54,7 @@ type ShowMoneyService struct {
 	Key string `json:"key" form:"key"`
 }
 
-func (service *UserService) Register(ctx *gin.Context) serializer.Response {
+func (service *UserRegisterService) Register(ctx *gin.Context) serializer.Response {
 	var user *model.User
 	code := e.SUCCESS
 	if !utils.CaptchaVerify(ctx, service.CaptchaCode) {
@@ -47,7 +62,7 @@ func (service *UserService) Register(ctx *gin.Context) serializer.Response {
 		return serializer.Response{
 			Status: code,
 			Msg:    e.GetMsg(code),
-			Data:   "验证码错误",
+			Error:  "验证码错误",
 		}
 	}
 	if service.Key == "" || len(service.Key) != 16 {
@@ -55,7 +70,7 @@ func (service *UserService) Register(ctx *gin.Context) serializer.Response {
 		return serializer.Response{
 			Status: code,
 			Msg:    e.GetMsg(code),
-			Data:   "密钥长度不足",
+			Error:  "密钥长度不足",
 		}
 	}
 	// 10000 => 密文加密
@@ -64,11 +79,11 @@ func (service *UserService) Register(ctx *gin.Context) serializer.Response {
 	userDao := dao.NewUserDao(ctx)
 	_, exist, err := userDao.ExistOrNotByUserName(service.UserName)
 	if err != nil {
-		utils.LogrusObj.Info(err)
 		code = e.ERROR
 		return serializer.Response{
 			Status: code,
 			Msg:    e.GetMsg(code),
+			Error:  "查询数据库出错",
 		}
 	}
 	if exist {
@@ -76,6 +91,7 @@ func (service *UserService) Register(ctx *gin.Context) serializer.Response {
 		return serializer.Response{
 			Status: code,
 			Msg:    e.GetMsg(code),
+			Error:  "用户已经存在",
 		}
 	}
 	user = &model.User{
@@ -97,7 +113,6 @@ func (service *UserService) Register(ctx *gin.Context) serializer.Response {
 	// 创建用户
 	err = userDao.CreateUser(user)
 	if err != nil {
-		utils.LogrusObj.Info(err)
 		code = e.ERROR
 	}
 	return serializer.Response{
@@ -106,7 +121,7 @@ func (service *UserService) Register(ctx *gin.Context) serializer.Response {
 	}
 }
 
-func (service *UserService) Login(ctx *gin.Context) serializer.Response {
+func (service *UserLoginService) Login(ctx *gin.Context) serializer.Response {
 	var user *model.User
 	code := e.SUCCESS
 	if !utils.CaptchaVerify(ctx, service.CaptchaCode) {
@@ -158,7 +173,7 @@ func (service *UserService) Login(ctx *gin.Context) serializer.Response {
 	}
 }
 
-func (service *UserService) Update(ctx context.Context, uId uint) serializer.Response {
+func (service *UserUpdateService) Update(ctx context.Context, uId uint) serializer.Response {
 	var err error
 	code := e.SUCCESS
 	userDao := dao.NewUserDao(ctx)

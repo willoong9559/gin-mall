@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/willoong9559/gin-mall/conf"
+	"github.com/willoong9559/gin-mall/internel/localization"
 	"github.com/willoong9559/gin-mall/internel/routers"
 )
 
@@ -11,6 +12,7 @@ import (
 // @termsOfService https://github.com/willoong9559/gin-mall
 func main() {
 	conf.Init()
+	localization.LoadValidTrans()
 	r := routers.NewRouter()
 	r.Run(conf.HttpPort)
 }
