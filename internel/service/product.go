@@ -132,7 +132,7 @@ func (service *ProductService) List(ctx context.Context) serializer.Response {
 	productDao = dao.NewProductDaoByDB(productDao.DB)
 	products, _ = productDao.ListProductByCondition(condition, service.BasePage)
 
-	return serializer.BuildListResponse(serializer.BuildProducts(products), uint(total))
+	return serializer.GetListResponse(serializer.BuildProducts(products), uint(total))
 }
 
 func (service *ProductService) Search(ctx context.Context) serializer.Response {
@@ -151,5 +151,5 @@ func (service *ProductService) Search(ctx context.Context) serializer.Response {
 			Msg:    e.GetMsg(code),
 		}
 	}
-	return serializer.BuildListResponse(serializer.BuildProducts(products), uint(count))
+	return serializer.GetListResponse(serializer.BuildProducts(products), uint(count))
 }

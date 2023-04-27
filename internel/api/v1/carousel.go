@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/willoong9559/gin-mall/internel/service"
+	service "github.com/willoong9559/gin-mall/internel/service/carousel"
 )
 
 // @Summary 获取轮播图
@@ -20,9 +20,7 @@ import (
 // @Router /api/v1/carousels [post]
 func ListCarousels(c *gin.Context) {
 	var listCarouselsService service.ListCarouselsService
-	if err := c.ShouldBind(&listCarouselsService); err != nil {
-		c.JSON(http.StatusBadRequest, ErrorResponse(err))
-	}
+	_ = c.ShouldBind(&listCarouselsService)
 	res := listCarouselsService.List(c.Request.Context())
 	c.JSON(http.StatusOK, res)
 }

@@ -14,6 +14,7 @@ const (
 	ErrorFailEncryption
 	ErrorExistUserNotFound
 	ErrorNotCompare
+	ErrorUnmarshalType
 
 	ErrorAuthToken
 	ErrorAuthCheckTokenTimeout

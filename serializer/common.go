@@ -28,7 +28,7 @@ type TokenData struct {
 	Token string      `json:"token"`
 }
 
-func BuildListResponse(items interface{}, total uint) Response {
+func GetListResponse(items interface{}, total uint) Response {
 	return Response{
 		Status: 200,
 		Data: DataList{
