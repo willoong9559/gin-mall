@@ -19,13 +19,13 @@ import (
 type UserService struct {
 	UserName string `form:"user_name" json:"user_name" binding:"required,min=5,max=12"`
 	Password string `form:"password" json:"password" binding:"required,min=5,max=12"`
-	Key      string `form:"key" json:"key" binding:"required,len=16` // 密码加密存储秘钥（必须）
+	Key      string `form:"key" json:"key" binding:"required,len=16"` // 密码加密存储秘钥（必须）
 }
 
 type UserRegisterService struct {
 	UserService
 	NickName    string `form:"nick_name" json:"nick_name" binding:"required,min=5,max=8"`
-	RePassword  string `form:"re_password" json:"password" binding:"required,eqfield=Password"`
+	RePassword  string `form:"re_password" json:"re_password" binding:"required,eqfield=Password"`
 	CaptchaCode string `form:"captcha_code" json:"captcha_code" binding:"required,len=4"`
 }
 

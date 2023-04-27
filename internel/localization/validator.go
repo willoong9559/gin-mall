@@ -34,7 +34,7 @@ func (errs ValidationErrors) Translate() map[string]string {
 func removeTopStruct(fields map[string]string) map[string]string {
 	rsp := map[string]string{}
 	for field, err := range fields {
-		rsp[field[strings.Index(field, ".")+1:]] = err
+		rsp[field[strings.LastIndex(field, ".")+1:]] = err
 	}
 	return rsp
 }
