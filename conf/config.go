@@ -34,6 +34,10 @@ var (
 	AvatarPath  string
 
 	ValidatorLang string
+
+	LogSavePath string
+	LogFileName string
+	LogFileExt  string
 )
 
 func Init() {
@@ -80,4 +84,10 @@ func LoadPhotoPath(file *ini.File) {
 
 func LoadValidator(file *ini.File) {
 	ValidatorLang = file.Section("validator").Key("Language").String()
+}
+
+func LoadLogger(file *ini.File) {
+	LogSavePath = file.Section("logger").Key("LogSavePath").String()
+	LogFileName = file.Section("logger").Key("LogFileName").String()
+	LogFileExt = file.Section("logger").Key("LogFileExt").String()
 }
