@@ -5,7 +5,6 @@ import (
 
 	"github.com/willoong9559/gin-mall/internel/dao"
 	e "github.com/willoong9559/gin-mall/pkg/errcode"
-	"github.com/willoong9559/gin-mall/pkg/utils"
 	"github.com/willoong9559/gin-mall/serializer"
 )
 
@@ -18,7 +17,6 @@ func (service *ShowMoneyService) Show(ctx context.Context, uId uint) serializer.
 	userDao := dao.NewUserDao(ctx)
 	user, err := userDao.GetUserById(uId)
 	if err != nil {
-		utils.LogrusObj.Info(err)
 		code = e.ERROR
 		return serializer.Response{
 			Status: code,

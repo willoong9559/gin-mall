@@ -4,6 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+
+	"github.com/willoong9559/gin-mall/global"
 	service "github.com/willoong9559/gin-mall/internel/service/carousel"
 )
 
@@ -20,7 +22,11 @@ import (
 // @Router /api/v1/carousels [post]
 func ListCarousels(c *gin.Context) {
 	var listCarouselsService service.ListCarouselsService
-	_ = c.ShouldBind(&listCarouselsService)
+	err := c.ShouldBind(&listCarouselsService)
+	if err != nil {
+		global.Logger.Error(err)
+		return
+	}
 	res := listCarouselsService.List(c.Request.Context())
 	c.JSON(http.StatusOK, res)
 }

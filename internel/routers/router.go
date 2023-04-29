@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
+
 	_ "github.com/willoong9559/gin-mall/docs"
 	api "github.com/willoong9559/gin-mall/internel/api/v1"
 	"github.com/willoong9559/gin-mall/internel/middleware"

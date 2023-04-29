@@ -2,6 +2,7 @@ package user
 
 import (
 	"github.com/gin-gonic/gin"
+
 	"github.com/willoong9559/gin-mall/internel/dao"
 	"github.com/willoong9559/gin-mall/internel/model"
 	e "github.com/willoong9559/gin-mall/pkg/errcode"

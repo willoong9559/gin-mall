@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"log"
 	"mime/multipart"
 	"strconv"
 	"sync"
@@ -34,13 +35,12 @@ func (service *ProductService) Create(ctx context.Context, uId uint, files []*mu
 	userDao := dao.NewUserDao(ctx)
 	boss, err := userDao.GetUserById(uId)
 	if err != nil {
-		utils.LogrusObj.Info(err)
+		log.Println(err)
 	}
 	// 以第一张作为封面图
 	tmp, _ := files[0].Open()
 	path, err := utils.UploadToLocalStatic(tmp, uId, service.Name, utils.ProductImg)
 	if err != nil {
-		utils.LogrusObj.Info(err)
 		code = e.ErrorProductUpload
 		return serializer.Response{
 			Status: code,
@@ -64,7 +64,6 @@ func (service *ProductService) Create(ctx context.Context, uId uint, files []*mu
 	productDao := dao.NewProductDao(ctx)
 	err = productDao.CreateProduct(product)
 	if err != nil {
-		utils.LogrusObj.Info(err)
 		code = e.ERROR
 		return serializer.Response{
 			Status: code,
@@ -122,7 +121,6 @@ func (service *ProductService) List(ctx context.Context) serializer.Response {
 	productDao := dao.NewProductDao(ctx)
 	total, err := productDao.CountProductByCondition(condition)
 	if err != nil {
-		utils.LogrusObj.Info(err)
 		code = e.ERROR
 		return serializer.Response{
 			Status: code,
@@ -144,7 +142,6 @@ func (service *ProductService) Search(ctx context.Context) serializer.Response {
 	productDao := dao.NewProductDao(ctx)
 	products, count, err := productDao.SearchProducts(service.Info, service.BasePage)
 	if err != nil {
-		utils.LogrusObj.Info(err)
 		code = e.ERROR
 		return serializer.Response{
 			Status: code,

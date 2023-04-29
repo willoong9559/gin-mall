@@ -1,16 +1,18 @@
 package conf
 
 import (
-	"fmt"
+	"log"
 	"strings"
 
-	"github.com/willoong9559/gin-mall/internel/dao"
 	"gopkg.in/ini.v1"
 )
 
 var (
 	AppMode  string
 	HttpPort string
+
+	DbPathRead  string
+	DbPathWrite string
 
 	Db         string
 	DbHost     string
@@ -43,16 +45,15 @@ var (
 func Init() {
 	file, err := ini.Load("./conf/config.ini")
 	if err != nil {
-		fmt.Println("配置文件读取错误，请检查文件路径:", err)
+		log.Print("配置文件读取错误，请检查文件路径:", err)
 	}
 	LoadServer(file)
 	LoadMysql(file)
 	LoadEmail(file)
 	LoadPhotoPath(file)
 	LoadValidator(file)
-	pathRead := strings.Join([]string{DbUser, ":", DbPassWord, "@tcp(", DbHost, ":", DbPort, ")/", DbName, "?charset=utf8mb4&parseTime=true"}, "")
-	pathWrite := strings.Join([]string{DbUser, ":", DbPassWord, "@tcp(", DbHost, ":", DbPort, ")/", DbName, "?charset=utf8mb4&parseTime=true"}, "")
-	dao.Database(pathRead, pathWrite)
+	DbPathRead = strings.Join([]string{DbUser, ":", DbPassWord, "@tcp(", DbHost, ":", DbPort, ")/", DbName, "?charset=utf8mb4&parseTime=true"}, "")
+	DbPathWrite = strings.Join([]string{DbUser, ":", DbPassWord, "@tcp(", DbHost, ":", DbPort, ")/", DbName, "?charset=utf8mb4&parseTime=true"}, "")
 }
 
 func LoadServer(file *ini.File) {

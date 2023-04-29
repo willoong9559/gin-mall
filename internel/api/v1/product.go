@@ -4,6 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+
+	"github.com/willoong9559/gin-mall/global"
 	"github.com/willoong9559/gin-mall/internel/service"
 	"github.com/willoong9559/gin-mall/pkg/utils"
 )
@@ -25,6 +27,7 @@ func CreateProduct(c *gin.Context) {
 	claim, _ := utils.ParseToken(c.GetHeader("Authorization"))
 	createProductService := service.ProductService{}
 	if err := c.ShouldBind(&createProductService); err != nil {
+		global.Logger.Error(err)
 		handleBindingErr(c, err)
 		return
 	}
@@ -46,6 +49,7 @@ func CreateProduct(c *gin.Context) {
 func ListProducts(c *gin.Context) {
 	listProductService := service.ProductService{}
 	if err := c.ShouldBind(&listProductService); err != nil {
+		global.Logger.Error(err)
 		handleBindingErr(c, err)
 		return
 	}
@@ -67,6 +71,7 @@ func ListProducts(c *gin.Context) {
 func SearchProducts(c *gin.Context) {
 	searchProductsService := service.ProductService{}
 	if err := c.ShouldBind(&searchProductsService); err != nil {
+		global.Logger.Error(err)
 		handleBindingErr(c, err)
 		return
 	}

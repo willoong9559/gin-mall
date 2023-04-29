@@ -4,6 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+
+	"github.com/willoong9559/gin-mall/global"
 	"github.com/willoong9559/gin-mall/internel/service/email"
 	"github.com/willoong9559/gin-mall/internel/service/user"
 	service "github.com/willoong9559/gin-mall/internel/service/user"
@@ -46,6 +48,7 @@ func UserRegister(c *gin.Context) {
 func UserLogin(c *gin.Context) {
 	var userLogin service.UserLoginService
 	if err := c.ShouldBind(&userLogin); err != nil {
+		global.Logger.Error(err)
 		handleBindingErr(c, err)
 		return
 	}
@@ -69,6 +72,7 @@ func UserUpdate(c *gin.Context) {
 	var userUpdate service.UserUpdateService
 	claims, _ := utils.ParseToken(c.GetHeader("Authorization"))
 	if err := c.ShouldBind(&userUpdate); err != nil {
+		global.Logger.Error(err)
 		handleBindingErr(c, err)
 		return
 	}
@@ -93,6 +97,7 @@ func UploadAvatar(c *gin.Context) {
 	uploadAvatarService := user.UserService{}
 	claims, _ := utils.ParseToken(c.GetHeader("Authorization"))
 	if err := c.ShouldBind(&uploadAvatarService); err != nil {
+		global.Logger.Error(err)
 		handleBindingErr(c, err)
 		return
 	}
@@ -115,6 +120,7 @@ func SendEmail(c *gin.Context) {
 	var sendEmail email.SendEmailService
 	claims, _ := utils.ParseToken(c.GetHeader("Authorization"))
 	if err := c.ShouldBind(&sendEmail); err != nil {
+		global.Logger.Error(err)
 		handleBindingErr(c, err)
 		return
 	}
@@ -136,6 +142,7 @@ func SendEmail(c *gin.Context) {
 func ValidEmail(c *gin.Context) {
 	var vaildEmailService email.ValidEmailService
 	if err := c.ShouldBind(&vaildEmailService); err != nil {
+		global.Logger.Error(err)
 		handleBindingErr(c, err)
 		return
 	}
@@ -158,6 +165,7 @@ func ShowMoney(c *gin.Context) {
 	var showMoneyService user.ShowMoneyService
 	claims, _ := utils.ParseToken(c.GetHeader("Authorization"))
 	if err := c.ShouldBind(&showMoneyService); err != nil {
+		global.Logger.Error(err)
 		handleBindingErr(c, err)
 		return
 	}

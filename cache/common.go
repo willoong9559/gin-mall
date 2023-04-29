@@ -1,10 +1,10 @@
 package cache
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/go-redis/redis"
+	"github.com/willoong9559/gin-mall/global"
 	"gopkg.in/ini.v1"
 )
 
@@ -20,7 +20,7 @@ var (
 func init() {
 	file, err := ini.Load("./conf/config.ini")
 	if err != nil {
-		fmt.Println("配置文件读取错误，请检查文件路径:", err)
+		global.Logger.Info("配置文件读取错误，请检查文件路径:", err)
 	}
 	LoadRedisData(file)
 	Redis()
@@ -37,7 +37,7 @@ func Redis() {
 	// redis状态心跳检测
 	_, err := client.Ping().Result()
 	if err != nil {
-		panic(err)
+		global.Logger.Panic(err)
 	}
 	RedisClient = client
 }

@@ -4,15 +4,18 @@ import (
 	"context"
 	"time"
 
-	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
 	"gorm.io/plugin/dbresolver"
+
+	"github.com/gin-gonic/gin"
+	"github.com/willoong9559/gin-mall/conf"
+	"github.com/willoong9559/gin-mall/global"
 )
 
-var _db *gorm.DB
+var db *gorm.DB
 
 func Database(connRead, connWrite string) {
 	var ormLogger logger.Interface
@@ -21,7 +24,7 @@ func Database(connRead, connWrite string) {
 	} else {
 		ormLogger = logger.Default
 	}
-	db, err := gorm.Open(mysql.New(mysql.Config{
+	_db, err := gorm.Open(mysql.New(mysql.Config{
 		DSN:                       connRead, // DSN data source name
 		DefaultStringSize:         256,      // string 类型字段的默认长度
 		DisableDatetimePrecision:  true,     // 禁用 datetime 精度，MySQL 5.6 之前的数据库不支持
@@ -37,11 +40,11 @@ func Database(connRead, connWrite string) {
 	if err != nil {
 		return
 	}
-	sqlDB, _ := db.DB()
+	sqlDB, _ := _db.DB()
 	sqlDB.SetMaxIdleConns(20)  //设置连接池，空闲
 	sqlDB.SetMaxOpenConns(100) //打开
 	sqlDB.SetConnMaxLifetime(time.Second * 30)
-	_db = db
+	db = _db
 
 	// 主从配置
 	_ = _db.Use(dbresolver.
@@ -51,10 +54,14 @@ func Database(connRead, connWrite string) {
 			Replicas: []gorm.Dialector{mysql.Open(connRead), mysql.Open(connRead)}, // 读操作
 			Policy:   dbresolver.RandomPolicy{},                                    // sources/replicas 负载均衡策略
 		}))
-	Migration()
+}
+
+func NewGlobalDB() *gorm.DB {
+	Database(conf.DbPathRead, conf.DbPathWrite)
+	return db
 }
 
 func NewDBClient(ctx context.Context) *gorm.DB {
-	db := _db
+	db := global.DB
 	return db.WithContext(ctx)
 }
